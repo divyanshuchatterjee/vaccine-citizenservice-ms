@@ -1,6 +1,7 @@
 package com.vaccination.citizenService.controller;
 
 import com.vaccination.citizenService.entity.CitizenEntity;
+import com.vaccination.citizenService.exceptionHandler.EmptyQueryParamException;
 import com.vaccination.citizenService.model.CitizenModel;
 import com.vaccination.citizenService.service.CitizenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class CitizenController {
 
     @PostMapping("/postById")
     public ResponseEntity<CitizenEntity> postByID(@RequestBody CitizenModel citizenModel){
+        if(0 == citizenModel.getId_no() || citizenModel.getName() == null){
+            throw new EmptyQueryParamException("The 'id' query param is missing");
+        }
         CitizenEntity citizenEntity = citizenService.saveCitizen(citizenModel);
         return new ResponseEntity<>(citizenEntity, HttpStatus.OK);
     }
