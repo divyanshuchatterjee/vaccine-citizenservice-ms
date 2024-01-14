@@ -11,11 +11,11 @@ import org.springframework.web.client.HttpClientErrorException;
 public class CItizenControllerHandler {
 
     @ExceptionHandler(EmptyQueryParamException.class)
-    public ResponseEntity<Error> handleNotFound(){
+    public ResponseEntity<Error> handleNotFound(EmptyQueryParamException emptyQueryParamException){
         Error err = new Error();
         err.setError("Empty Query Parameter");
         err.setStatus(HttpStatus.BAD_REQUEST.getReasonPhrase());
-        err.setMessage("The request body is missing a required field, please check again");
+        err.setMessage(emptyQueryParamException.getMessage());
         return new ResponseEntity<>(err, HttpStatus.NOT_FOUND);
     }
 }
